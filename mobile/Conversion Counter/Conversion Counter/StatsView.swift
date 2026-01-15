@@ -12,6 +12,7 @@ struct StatsView: View {
     @Query private var conversions: [Item]
     @Query(sort: [SortDescriptor(\AppointmentCount.createdAt, order: .forward)]) private var appointments: [AppointmentCount]
     @Environment(\.modelContext) private var context
+    @State private var editMode: Bool = false
     @State private var filterName: String = "All"
     @State private var sortType: String = "Date Sold"
     @State private var searchDate: Date = Date.now
@@ -29,18 +30,6 @@ struct StatsView: View {
             VStack(spacing: 20) {
                 Text("Statistics")
                     .font(.largeTitle)
-                Menu {
-                    Picker("Filter", selection: $filterName) {
-                        Text("All").tag("All")
-                        Label("Accessories", systemImage: "bag").tag("Accessory")
-                        Label("Upgrades", systemImage: "arrow.up.circle").tag("Upgrade")
-                        Label("Trade-Ins", systemImage: "arrow.2.squarepath").tag("Trade-In")
-                    }
-                } label: {
-                    Label("Filter", systemImage: "line.3.horizontal.decrease")
-                        .font(.title2)
-                }
-                Spacer()
                 
                 let sortedConv = conversions.sorted {
                     return $0.convType < $1.convType
@@ -53,6 +42,34 @@ struct StatsView: View {
                 let groupedByDate = Dictionary(grouping: filtered, by: { $0.date })
                 let itemsForDate = groupedByDate[searchDateString] ?? []
                 
+                HStack {
+                    Spacer()
+                    Menu {
+                        Picker("Filter", selection: $filterName) {
+                            Text("All").tag("All")
+                            Label("Accessories", systemImage: "bag").tag("Accessory")
+                            Label("Upgrades", systemImage: "arrow.up.circle").tag("Upgrade")
+                            Label("Trade-Ins", systemImage: "arrow.2.squarepath").tag("Trade-In")
+                            Label("AppleCare", systemImage: "applelogo").tag("AppleCare")
+                        }
+                    } label: {
+                        Label("Filter", systemImage: "line.3.horizontal.decrease")
+                            .font(.title2)
+                    }
+                    Spacer()
+                    Button(
+                        action: {
+                            editMode = !editMode
+                        },
+                        label: {
+                            editMode ? Text("Done") : Text("Edit")
+                        }
+                    )
+                    .disabled(itemsForDate.isEmpty)
+                    Spacer()
+                }
+                Spacer()
+                
                 ScrollView {
                     Text(searchDateString)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -61,7 +78,7 @@ struct StatsView: View {
                         .padding(EdgeInsets(top: 0, leading: 20, bottom: 5, trailing: 20))
                     
                     
-                    
+                    // Items list
                     if itemsForDate.isEmpty {
                         Text("No items")
                             .foregroundStyle(.secondary)
@@ -74,6 +91,22 @@ struct StatsView: View {
                                 Spacer()
                                 Text(item.itemName)
                                     .foregroundStyle(.primary)
+                                // Edit Mode Delete Button
+                                if editMode {
+                                    Button(
+                                        action: {
+                                            // TODO: TEST DELETE ACTION ON PHONE
+                                            context.delete(item)
+                                        }, label: {
+                                            Label(
+                                                "",
+                                                systemImage: "minus.circle.fill"
+                                            )
+                                            .foregroundStyle(Color.red)
+                                            .padding(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 0))
+                                        }
+                                    )
+                                }
                             }
                             .padding(EdgeInsets(top: 5, leading: 40, bottom: 5, trailing: 40))
                         }

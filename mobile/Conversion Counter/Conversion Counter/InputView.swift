@@ -24,6 +24,7 @@ struct InputView: View {
     @State private var toastOpacity = 1.0
     @State private var showError = false
     @State private var numAppointments = ""
+    @State private var data: 
     @FocusState private var fieldIsFocused: Bool
     
     
@@ -42,17 +43,41 @@ struct InputView: View {
                 if typeOfInput == "Conversion" {
                     Picker("Conversion Type", selection: $typeOfConversion) {
                         Text("Accessory").tag("Accessory")
+                        Text("AppleCare").tag("AppleCare")
                         Text("Trade-In").tag("Trade-In")
                         Text("Upgrade").tag("Upgrade")
                     }
                     .pickerStyle(.palette)
-                    .padding(EdgeInsets(top: 0, leading: 15, bottom: 0, trailing: 15))
+                    .padding(EdgeInsets(top: 0, leading: 25, bottom: 0, trailing: 25))
                     
-                    TextField("Enter purchased item", text: $itemPurchased)
-                        .padding()
-                        .multilineTextAlignment(.center)
-                        .autocorrectionDisabled(true)
-                        .focused($fieldIsFocused)
+                    switch typeOfConversion {
+                    case "Accessory":
+                        TextField("Enter accessory that was purchased", text: $itemPurchased)
+                            .padding()
+                            .multilineTextAlignment(.center)
+                            .autocorrectionDisabled(true)
+                            .focused($fieldIsFocused)
+                    case "AppleCare":
+                        TextField("Enter item AppleCare was attached to", text: $itemPurchased)
+                            .padding()
+                            .multilineTextAlignment(.center)
+                            .autocorrectionDisabled(true)
+                            .focused($fieldIsFocused)
+                    case "Upgrade":
+                        TextField("Enter device that was purchased", text: $itemPurchased)
+                            .padding()
+                            .multilineTextAlignment(.center)
+                            .autocorrectionDisabled(true)
+                            .focused($fieldIsFocused)
+                    case "Trade-In":
+                        TextField("Enter device that was traded-in", text: $itemPurchased)
+                            .padding()
+                            .multilineTextAlignment(.center)
+                            .autocorrectionDisabled(true)
+                            .focused($fieldIsFocused)
+                    default:
+                        Text("Please select a conversion category")
+                    }
                     
                     Button("Add item") {
                         fieldIsFocused = false
@@ -99,7 +124,7 @@ struct InputView: View {
                     .opacity(toastOpacity)
                     .transition(.opacity)
                     .task {
-                        try? await Task.sleep(nanoseconds: 2_000_000_000)
+                        try? await Task.sleep(nanoseconds: 1_500_000_000)
                         withAnimation(.easeInOut(duration: 0.4)) {
                             toastOpacity = 0
                             showError = false
@@ -111,7 +136,7 @@ struct InputView: View {
                     .opacity(toastOpacity)
                     .transition(.opacity)
                     .task {
-                        try? await Task.sleep(nanoseconds: 2_000_000_000)
+                        try? await Task.sleep(nanoseconds: 1_500_000_000)
                         withAnimation(.easeInOut(duration: 0.4)) {
                             toastOpacity = 0
                             itemAdded = false
