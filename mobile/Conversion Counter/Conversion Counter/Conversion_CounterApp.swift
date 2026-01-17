@@ -14,7 +14,7 @@ struct Conversion_CounterApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .modelContainer(for: [Item.self, AppointmentCount.self])
+                .modelContainer(for: [Item.self, DailyData.self])
         }
     }
 }

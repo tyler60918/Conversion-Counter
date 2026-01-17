@@ -9,21 +9,13 @@ import SwiftUI
 import SwiftData
 
 struct StatsView: View {
-    @Query private var conversions: [Item]
-    @Query(sort: [SortDescriptor(\AppointmentCount.createdAt, order: .forward)]) private var appointments: [AppointmentCount]
+    @Query private var data: [DailyData]
     @Environment(\.modelContext) private var context
     @State private var editMode: Bool = false
     @State private var filterName: String = "All"
     @State private var sortType: String = "Date Sold"
-    @State private var searchDate: Date = Date.now
-    private var searchDateString: String {
-        searchDate.formatted(
-            .dateTime
-                .year()
-                .month(.twoDigits)
-                .day(.twoDigits)
-        )
-    }
+    @State private var searchDate: Date = Calendar.current.startOfDay(for: Date.now)
+    @State private var today: Date = Calendar.current.startOfDay(for: Date.now)
     
     var body: some View {
         GeometryReader { geometry in
@@ -31,16 +23,14 @@ struct StatsView: View {
                 Text("Statistics")
                     .font(.largeTitle)
                 
-                let sortedConv = conversions.sorted {
+                let todayData = data.first(where: { Calendar.current.isDate($0.date, inSameDayAs: today) })
+                let sortedConv = todayData!.conversions.sorted {
                     return $0.convType < $1.convType
                 }
                 
                 let filtered = sortedConv.filter { item in
-                    (filterName == "All" || item.convType == filterName) && item.date == searchDateString
+                    (filterName == "All" || item.convType == filterName)/* && Calendar.current.isDate(item.date, inSameDayAs: searchDate)*/
                 }
-                
-                let groupedByDate = Dictionary(grouping: filtered, by: { $0.date })
-                let itemsForDate = groupedByDate[searchDateString] ?? []
                 
                 HStack {
                     Spacer()
@@ -65,13 +55,20 @@ struct StatsView: View {
                             editMode ? Text("Done") : Text("Edit")
                         }
                     )
-                    .disabled(itemsForDate.isEmpty)
+                    .disabled(filtered.isEmpty && !editMode)
                     Spacer()
                 }
                 Spacer()
                 
                 ScrollView {
-                    Text(searchDateString)
+                    Text(
+                        searchDate
+                            .formatted(
+                                .dateTime
+                                .year()
+                                .month(.twoDigits)
+                                .day(.twoDigits))
+                    )
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .font(.title2)
                         .fontWeight(.bold)
@@ -79,11 +76,11 @@ struct StatsView: View {
                     
                     
                     // Items list
-                    if itemsForDate.isEmpty {
+                    if filtered.isEmpty {
                         Text("No items")
                             .foregroundStyle(.secondary)
                     } else {
-                        ForEach(itemsForDate) { item in
+                        ForEach(filtered) { item in
                             HStack {
                                 Text(item.convType)
                                     .foregroundStyle(.primary)
@@ -95,8 +92,8 @@ struct StatsView: View {
                                 if editMode {
                                     Button(
                                         action: {
-                                            // TODO: TEST DELETE ACTION ON PHONE
-                                            context.delete(item)
+                                            todayData?.conversions.remove(at: todayData!.conversions.firstIndex(of: item)!)
+                                            todayData?.calculateConvPercent()
                                         }, label: {
                                             Label(
                                                 "",
@@ -115,16 +112,8 @@ struct StatsView: View {
                 .frame(maxWidth: .infinity, maxHeight: geometry.size.height / 2, alignment: .center)
                 Spacer()
                 
-                let groupApptByDate = Dictionary(grouping: appointments, by: { $0.date })
-                let numAppointments = groupApptByDate[searchDateString]?.last?.count ?? "0" // Getting the last entered number of appointments from the list
-                let appointmentCountInt = Int(numAppointments) ?? 0
-                
-                
-                let conversionsForDate = itemsForDate.count
-                let percent = appointmentCountInt > 0 ? String((Double(conversionsForDate) / Double(appointmentCountInt) * 100).rounded()) : "0"
-                
-                Text("Appointments: \(numAppointments)")
-                Text("Conversion %: \(percent)%")
+                Text("Appointments: \(todayData?.numAppointments ?? -1)")
+                Text("Conversion %: \(todayData!.conversionPercentage, specifier: "%.02f")%")
                 
                 Spacer()
                 HStack {
@@ -149,7 +138,7 @@ struct StatsView: View {
 
 #Preview {
     StatsView()
-        .modelContainer(for: [Item.self, AppointmentCount.self], inMemory: true)
+        .modelContainer(for: [Item.self], inMemory: true)
 }
 
 struct Previews_StatsView_LibraryContent: LibraryContentProvider {

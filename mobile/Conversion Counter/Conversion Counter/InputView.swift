@@ -10,21 +10,17 @@ import SwiftData
 
 struct InputView: View {
     @Environment(\.modelContext) private var context
+    @Query private var data: [DailyData]
 
     @State private var typeOfConversion = "Accessory"
     @State private var typeOfInput = "Conversion"
     @State private var itemPurchased = ""
-    @State private var date = Date.now.formatted(
-        .dateTime
-            .year()
-            .month(.twoDigits)
-            .day(.twoDigits)
-    )
+    @State private var today: Date = Calendar.current.startOfDay(for: Date.now)
     @State private var itemAdded = false
     @State private var toastOpacity = 1.0
     @State private var showError = false
     @State private var numAppointments = ""
-    @State private var data: 
+    
     @FocusState private var fieldIsFocused: Bool
     
     
@@ -85,9 +81,19 @@ struct InputView: View {
                             showError = true
                             toastOpacity = 1.0
                         } else {
-                            let newItem = Item(convType: typeOfConversion, itemName: itemPurchased, date: date)
-                            context.insert(newItem)
-                            print("Sold \(itemPurchased) in category \(typeOfConversion) on \(date)")
+                            let newItem = Item(convType: typeOfConversion, itemName: itemPurchased, date: today)
+                            if let existingData = data.first(where: { Calendar.current.isDate($0.date, inSameDayAs: today) }) {
+                                existingData.addConversion(newItem)
+                                try? context.save()
+                                print("Data existed. Updating...")
+                            } else {
+                                let newDailyData = DailyData(date: today, conversions: [newItem])
+                                context.insert(newDailyData)
+                                try? context.save()
+                                print("Data was new. Inserting...")
+                            }
+                            print("Passed if statement")
+                            print("Sold \(itemPurchased) in category \(typeOfConversion) on \(today)")
                             itemPurchased = ""
                             itemAdded = true
                             toastOpacity = 1.0
@@ -106,17 +112,21 @@ struct InputView: View {
                             showError = true
                             toastOpacity = 1.0
                         } else {
-                            let newAppointmentCount = AppointmentCount(count: numAppointments, date: date)
-                            context.insert(newAppointmentCount)
-                            print("Took \(numAppointments) appointments on \(date)")
+                            if let existingData = data.first(where: { Calendar.current.isDate($0.date, inSameDayAs: today) }) {
+                                existingData.updateNumAppointments(Int(numAppointments)!)
+                                try? context.save()
+                            } else {
+                                let newDailyData = DailyData(date: today, numAppointments: Int(numAppointments)!)
+                                context.insert(newDailyData)
+                                try? context.save()
+                            }
+                            print("Took \(numAppointments) appointments on \(today)")
                             numAppointments = ""
                             itemAdded = true
                             toastOpacity = 1.0
                         }
                     }
                 }
-                
-                
             }
             
             if showError {
@@ -144,10 +154,9 @@ struct InputView: View {
                     }
             }
         }
-        
     }
 }
 
 #Preview {
-    InputView()
+//    InputView(data: DailyData(date: Date.now(), conversions: <#T##[Item]#>))
 }
