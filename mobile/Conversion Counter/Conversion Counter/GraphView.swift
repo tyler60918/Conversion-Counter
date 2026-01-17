@@ -52,13 +52,8 @@ struct GraphView: View {
             .padding(5)
             
             var filteredData: [DailyData] {
-                print("Daily Data Count: \(data.count)")
                 let filtered = data.filter { item in
                     (item.date <= endDate) && (item.date >= startDate)
-                }
-                print("Filtered data count: \(filtered.count)")
-                for item in filtered {
-                    print("Date: \(item.date), Conversion %: \(item.conversionPercentage)")
                 }
                 return filtered
             }

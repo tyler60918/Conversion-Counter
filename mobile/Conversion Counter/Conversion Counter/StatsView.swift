@@ -23,13 +23,10 @@ struct StatsView: View {
                 Text("Statistics")
                     .font(.largeTitle)
                 
-                let todayData = data.first(where: { Calendar.current.isDate($0.date, inSameDayAs: today) })
-                let sortedConv = todayData!.conversions.sorted {
-                    return $0.convType < $1.convType
-                }
-                
+                let todayData = data.first(where: { Calendar.current.isDate($0.date, inSameDayAs: searchDate) })
+                let sortedConv = todayData?.conversions.sorted { return $0.convType < $1.convType } ?? []
                 let filtered = sortedConv.filter { item in
-                    (filterName == "All" || item.convType == filterName)/* && Calendar.current.isDate(item.date, inSameDayAs: searchDate)*/
+                    (filterName == "All" || item.convType == filterName)
                 }
                 
                 HStack {
@@ -112,8 +109,8 @@ struct StatsView: View {
                 .frame(maxWidth: .infinity, maxHeight: geometry.size.height / 2, alignment: .center)
                 Spacer()
                 
-                Text("Appointments: \(todayData?.numAppointments ?? -1)")
-                Text("Conversion %: \(todayData!.conversionPercentage, specifier: "%.02f")%")
+                Text("Appointments: \(todayData?.numAppointments ?? 0)")
+                Text("Conversion %: \(todayData?.conversionPercentage ?? 0, specifier: "%.02f")%")
                 
                 Spacer()
                 HStack {

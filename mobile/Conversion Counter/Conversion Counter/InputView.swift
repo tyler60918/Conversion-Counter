@@ -85,15 +85,11 @@ struct InputView: View {
                             if let existingData = data.first(where: { Calendar.current.isDate($0.date, inSameDayAs: today) }) {
                                 existingData.addConversion(newItem)
                                 try? context.save()
-                                print("Data existed. Updating...")
                             } else {
                                 let newDailyData = DailyData(date: today, conversions: [newItem])
                                 context.insert(newDailyData)
                                 try? context.save()
-                                print("Data was new. Inserting...")
                             }
-                            print("Passed if statement")
-                            print("Sold \(itemPurchased) in category \(typeOfConversion) on \(today)")
                             itemPurchased = ""
                             itemAdded = true
                             toastOpacity = 1.0
@@ -120,7 +116,6 @@ struct InputView: View {
                                 context.insert(newDailyData)
                                 try? context.save()
                             }
-                            print("Took \(numAppointments) appointments on \(today)")
                             numAppointments = ""
                             itemAdded = true
                             toastOpacity = 1.0
