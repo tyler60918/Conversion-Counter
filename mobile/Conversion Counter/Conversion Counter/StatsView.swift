@@ -17,6 +17,12 @@ struct StatsView: View {
     @State private var searchDate: Date = Calendar.current.startOfDay(for: Date.now)
     @State private var today: Date = Calendar.current.startOfDay(for: Date.now)
     
+    private var formattedSearchDate: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE, MMM d, yyyy"
+        return dateFormatter.string(from: searchDate)
+    }
+    
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 20) {
@@ -58,14 +64,7 @@ struct StatsView: View {
                 Spacer()
                 
                 ScrollView {
-                    Text(
-                        searchDate
-                            .formatted(
-                                .dateTime
-                                .year()
-                                .month(.twoDigits)
-                                .day(.twoDigits))
-                    )
+                    Text(formattedSearchDate)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .font(.title2)
                         .fontWeight(.bold)
@@ -76,6 +75,7 @@ struct StatsView: View {
                     if filtered.isEmpty {
                         Text("No items")
                             .foregroundStyle(.secondary)
+                            .padding(EdgeInsets(top: 35, leading: 0, bottom: 0, trailing: 0))
                     } else {
                         ForEach(filtered) { item in
                             HStack {

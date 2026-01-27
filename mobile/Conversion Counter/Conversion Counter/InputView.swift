@@ -15,7 +15,7 @@ struct InputView: View {
     @State private var typeOfConversion = "Accessory"
     @State private var typeOfInput = "Conversion"
     @State private var itemPurchased = ""
-    @State private var today: Date = Calendar.current.startOfDay(for: Date.now)
+    @State private var inputDate: Date = Calendar.current.startOfDay(for: Date.now)
     @State private var itemAdded = false
     @State private var toastOpacity = 1.0
     @State private var showError = false
@@ -30,11 +30,31 @@ struct InputView: View {
                 Text("Input")
                     .font(.largeTitle)
                 
+                Spacer()
+
+                HStack {
+                    DatePicker(
+                        "",
+                        selection: $inputDate,
+                        displayedComponents: [.date]
+                    )
+                    .labelsHidden()
+                    Stepper(
+                        "",
+                        onIncrement: {inputDate = inputDate.addingTimeInterval(86_400)},
+                        onDecrement: {inputDate = inputDate.addingTimeInterval(-86_400)}
+                    )
+                    .labelsHidden()
+                }
+                
+                HStack {
+                    Text("Input type:")
                     Picker("Input Type", selection: $typeOfInput) {
                         Text("Conversion").tag("Conversion")
                         Text("Appointment Count").tag("Appointment Count")
                     }
-                    .pickerStyle(.menu)
+                }
+                .pickerStyle(.menu)
                 
                 if typeOfInput == "Conversion" {
                     Picker("Conversion Type", selection: $typeOfConversion) {
@@ -81,12 +101,12 @@ struct InputView: View {
                             showError = true
                             toastOpacity = 1.0
                         } else {
-                            let newItem = Item(convType: typeOfConversion, itemName: itemPurchased, date: today)
-                            if let existingData = data.first(where: { Calendar.current.isDate($0.date, inSameDayAs: today) }) {
+                            let newItem = Item(convType: typeOfConversion, itemName: itemPurchased, date: inputDate)
+                            if let existingData = data.first(where: { Calendar.current.isDate($0.date, inSameDayAs: inputDate) }) {
                                 existingData.addConversion(newItem)
                                 try? context.save()
                             } else {
-                                let newDailyData = DailyData(date: today, conversions: [newItem])
+                                let newDailyData = DailyData(date: inputDate, conversions: [newItem])
                                 context.insert(newDailyData)
                                 try? context.save()
                             }
@@ -108,11 +128,11 @@ struct InputView: View {
                             showError = true
                             toastOpacity = 1.0
                         } else {
-                            if let existingData = data.first(where: { Calendar.current.isDate($0.date, inSameDayAs: today) }) {
+                            if let existingData = data.first(where: { Calendar.current.isDate($0.date, inSameDayAs: inputDate) }) {
                                 existingData.updateNumAppointments(Int(numAppointments)!)
                                 try? context.save()
                             } else {
-                                let newDailyData = DailyData(date: today, numAppointments: Int(numAppointments)!)
+                                let newDailyData = DailyData(date: inputDate, numAppointments: Int(numAppointments)!)
                                 context.insert(newDailyData)
                                 try? context.save()
                             }
@@ -122,6 +142,7 @@ struct InputView: View {
                         }
                     }
                 }
+                Spacer()
             }
             
             if showError {
