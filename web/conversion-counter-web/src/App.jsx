@@ -1,4 +1,4 @@
-import './App.css'
+import './App.css';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import LandingPage from './LandingPage';
 import InputPage from './InputPage';
@@ -10,12 +10,12 @@ function App() {
 
   return (
     <>
-      <div>
+      <nav>
         <button onClick={() => navigate('/')}>Home</button>
         <button onClick={() => navigate('/input')}>Input</button>
         <button onClick={() => navigate('/stats')}>Stats</button>
         <button onClick={() => navigate('/graph')}>Graph</button>
-      </div>
+      </nav>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/input" element={<InputPage />} />
