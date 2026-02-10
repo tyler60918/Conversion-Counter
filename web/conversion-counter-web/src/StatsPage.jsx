@@ -1,4 +1,5 @@
 import { HStack, VStack } from "@chakra-ui/react";
+import { useState } from 'react';
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -21,9 +22,9 @@ function StatsPage() {
       <h2>
         Date
       </h2>
-      <ScrollView>
+      <ul>
         {/* List of items for date */}
-      </ScrollView>
+      </ul>
       <p>Appointments: </p>
       <p>Conversion %: </p>
       <HStack>
