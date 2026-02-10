@@ -16,3 +16,7 @@ nav {
 input {
   width: 75%;
 }
+
+li {
+  list-style-type: none;
+}

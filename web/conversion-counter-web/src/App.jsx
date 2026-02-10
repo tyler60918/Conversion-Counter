@@ -1,9 +1,9 @@
 import './App.css';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import LandingPage from './LandingPage';
-import InputPage from './InputPage';
-import StatsPage from './StatsPage';
-import GraphPage from './GraphPage';
+import LandingPage from './components/LandingPage';
+import InputPage from './components/InputPage';
+import StatsPage from './components/StatsPage';
+import GraphPage from './components/GraphPage';
 
 function App() {
   const navigate = useNavigate();
