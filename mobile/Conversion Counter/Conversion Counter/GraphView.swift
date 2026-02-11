@@ -21,6 +21,9 @@ struct GraphView: View {
         VStack {
             Text("Graphical View")
                 .font(.largeTitle)
+                .fontWeight(.bold)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(20)
             
             HStack(spacing: 20) {
                 Button("Week") {

@@ -28,6 +28,9 @@ struct StatsView: View {
             VStack(spacing: 20) {
                 Text("Statistics")
                     .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(20)
                 
                 let todayData = data.first(where: { Calendar.current.isDate($0.date, inSameDayAs: searchDate) })
                 let sortedConv = todayData?.conversions.sorted { return $0.convType < $1.convType } ?? []

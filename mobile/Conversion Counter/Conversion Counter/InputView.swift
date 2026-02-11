@@ -26,9 +26,12 @@ struct InputView: View {
     
     var body: some View {
         ZStack {
-            VStack {
+            VStack(spacing: 20) {
                 Text("Input")
                     .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(20)
                 
                 Spacer()
 
