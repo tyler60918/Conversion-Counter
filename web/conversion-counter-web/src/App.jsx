@@ -10,7 +10,7 @@ function App() {
   const navigate = useNavigate();
 
   return (
-    <Box minH="100vh" bg="gray.50">
+    <Box minH="100vh">
       <Box as="nav" mb={6}>
         <HStack spacing={4}>
           <Button onClick={() => navigate('/')}>Home</Button>

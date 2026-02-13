@@ -10,6 +10,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import * as Yup from 'yup';
+import "../App.css";
 
 function LandingPage() {
   const [submitType, setSubmitType] = useState('register')
