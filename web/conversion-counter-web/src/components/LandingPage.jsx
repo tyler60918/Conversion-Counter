@@ -1,75 +1,44 @@
 import { useState } from "react";
-import { useFormik } from "formik";
+import "../App.css";
+import LoginForm from "./LoginForm";
+import RegisterForm from "./RegisterForm";
 import {
-  Box,
-  Button,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
   VStack,
 } from "@chakra-ui/react";
-import * as Yup from 'yup';
-import "../App.css";
 
 function LandingPage() {
-  const [submitType, setSubmitType] = useState('register')
+  const [submitType, setSubmitType] = useState('')
+  const [loggedIn, setLoggedIn] = useState(false)
 
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    onSubmit: (values) => {
-
-    },
-    validationSchema: Yup.object({
-      email: Yup.string().email("Invalid email address").required("Required"),
-      password: Yup.string().required("Required").min(4, "Must be at least 4 characters"),
-    }),
-  });
+  function handleLoginStatus(value) {
+    setLoggedIn(value)
+  }
 
   return (
-    <div>
+    <VStack>
       <h1>
         Conversion Counter
       </h1>
-      <Box p={6} rounded="md" w="100%">
-        <form onSubmit={(e) => {
-          e.preventDefault()
-          formik.handleSubmit()
-        }}>
-          <VStack spacing={4}>
-            <FormControl isInvalid={formik.touched.email && formik.errors.email}>
-              <FormLabel htmlFor="email">Email</FormLabel>
-              <Input
-                id="email"
-                name="email"
-                {...formik.getFieldProps('email')}
-              />
-              <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
-            </FormControl>
-            <FormControl isInvalid={formik.touched.password && formik.errors.password}>
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                {...formik.getFieldProps('password')}
-              />
-              <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
-            </FormControl>
-            <Button
-              type="submit"
-              colorScheme="purple"
-              width="full"
-            >
-              Submit
-            </Button>
-          </VStack>
-        </form>
-      </Box>
-    </div>
+      <div className="formButtons">
+        {submitType == '' && <button onClick={() => { setSubmitType('register') }}>
+          Register
+        </button>}
+        {submitType == '' && <button onClick={() => { setSubmitType('sign in') }}>
+          Sign in
+        </button>}
+
+        {/* // Register new user */}
+        {submitType == 'register' && !loggedIn && <RegisterForm sendLoginStatus={handleLoginStatus} />}
+
+        {/* // Sign in existing user */}
+        {submitType == 'sign in' && !loggedIn && <LoginForm sendLoginStatus={handleLoginStatus} />}
+
+        {loggedIn && <p>Logged In!</p>}
+      </div>
+
+
+
+    </VStack>
   )
 }
 
