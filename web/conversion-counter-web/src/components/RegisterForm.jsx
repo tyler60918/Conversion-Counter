@@ -29,6 +29,7 @@ function RegisterForm({ sendLoginStatus }) {
     } else if (data) {
       console.log("New user registered!")
       sendLoginStatus(true)
+      console.log(data)
     }
   }
 

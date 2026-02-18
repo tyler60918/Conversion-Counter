@@ -4,6 +4,7 @@ import { supabase } from "./ui/supabase";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import '../App.css';
+import { useAuth } from "./ui/AuthContext"
 
 function getPostgresDate(jsDate) {
   const year = jsDate.getFullYear();
@@ -38,12 +39,14 @@ function StatsPage() {
     getData()
   }, [searchDate])
 
+  const { user } = useAuth()
 
   return (
     <VStack>
       <h1>
         Stats Page
       </h1>
+      <h1>Welcome {user?.user_metadata.first_name} {user?.user_metadata.last_name}</h1>
       <HStack>
         <button>
           Filter
