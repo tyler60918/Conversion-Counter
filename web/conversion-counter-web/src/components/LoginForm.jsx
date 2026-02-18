@@ -11,7 +11,7 @@ import * as Yup from 'yup';
 import { useFormik } from "formik";
 import { supabase } from "./ui/supabase";
 
-function LoginForm({ sendLoginStatus }) {
+function LoginForm() {
   async function signInUser(userEmail, userPassword) {
     const { data, error } = await supabase.auth.signInWithPassword({
       email: userEmail,
@@ -22,7 +22,7 @@ function LoginForm({ sendLoginStatus }) {
       console.error("Supabase: " + error.message)
     } else if (data) {
       console.log("Signed in!")
-      sendLoginStatus(true)
+      console.log(data)
     }
   }
 

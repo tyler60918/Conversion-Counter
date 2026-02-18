@@ -4,15 +4,13 @@ import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 import {
   VStack,
+  Button,
 } from "@chakra-ui/react";
+import { useAuth } from "./ui/AuthContext";
 
 function LandingPage() {
   const [submitType, setSubmitType] = useState('')
-  const [loggedIn, setLoggedIn] = useState(false)
-
-  function handleLoginStatus(value) {
-    setLoggedIn(value)
-  }
+  const { user } = useAuth()
 
   return (
     <VStack>
@@ -20,24 +18,24 @@ function LandingPage() {
         Conversion Counter
       </h1>
       <div className="formButtons">
-        {submitType == '' && <button onClick={() => { setSubmitType('register') }}>
+        {submitType == '' && !user && <Button onClick={() => { setSubmitType('register') }}>
           Register
-        </button>}
-        {submitType == '' && <button onClick={() => { setSubmitType('sign in') }}>
+        </Button>}
+        {submitType == '' && !user && <Button onClick={() => { setSubmitType('sign in') }}>
           Sign in
-        </button>}
+        </Button>}
 
         {/* // Register new user */}
-        {submitType == 'register' && !loggedIn && <RegisterForm sendLoginStatus={handleLoginStatus} />}
+        {submitType == 'register' && !user && <RegisterForm />}
 
         {/* // Sign in existing user */}
-        {submitType == 'sign in' && !loggedIn && <LoginForm sendLoginStatus={handleLoginStatus} />}
+        {submitType == 'sign in' && !user && <LoginForm />}
 
-        {loggedIn && <p>Logged In!</p>}
+        {user && <div>
+          <p>Logged In!</p>
+          <p>Welcome {user?.user_metadata.first_name} {user?.user_metadata.last_name}</p>
+        </div>}
       </div>
-
-
-
     </VStack>
   )
 }

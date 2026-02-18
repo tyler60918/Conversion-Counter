@@ -11,7 +11,7 @@ import * as Yup from 'yup';
 import { useFormik } from "formik";
 import { supabase } from "./ui/supabase";
 
-function RegisterForm({ sendLoginStatus }) {
+function RegisterForm() {
   async function signUpNewUser(newFirstName, newLastName, newEmail, newPassword) {
     const { data, error } = await supabase.auth.signUp({
       email: newEmail,
@@ -28,7 +28,6 @@ function RegisterForm({ sendLoginStatus }) {
       console.error("Supabase: " + error.message)
     } else if (data) {
       console.log("New user registered!")
-      sendLoginStatus(true)
       console.log(data)
     }
   }
