@@ -20,12 +20,13 @@ function StatsPage() {
 
   const [searchDate, setSearchDate] = useState(getPostgresDate(today))
   const [rows, setRows] = useState([])
+  const [numAppts, setNumAppts] = useState(0)
 
-  console.log(searchDate)
+  const { user } = useAuth()
 
   useEffect(() => {
-    const getData = async () => {
-      const { data, error } = await supabase.from('Conversions').select('*').eq('date', searchDate);
+    const getConversionData = async () => {
+      const { data, error } = await supabase.from('Conversions').select('*').eq('date', searchDate).eq('user_id', user.id);
 
       if (data) {
         setRows(data)
@@ -36,7 +37,20 @@ function StatsPage() {
       }
     }
 
-    getData()
+    const getAppointmentData = async () => {
+      const { data, error } = await supabase.from('Appointment_Counts').select('*').eq('date', searchDate).eq('user_id', user.id);
+
+      if (data) {
+        setNumAppts(data[0].num_appts)
+      }
+
+      if (error) {
+        console.error("Supabase error:", error);
+      }
+    }
+
+    getConversionData()
+    getAppointmentData()
   }, [searchDate])
 
   return (
@@ -62,8 +76,8 @@ function StatsPage() {
           </li>
         ))}
       </div>
-      <p>Appointments: </p>
-      <p>Conversion %: </p>
+      <p>Appointments: {numAppts}</p>
+      <p>Conversion %: {(rows.length / numAppts) * 100}%</p>
       <HStack>
         <DatePicker selected={searchDate} onChange={(date) => setSearchDate(getPostgresDate(date))} />
         {/* Stepper for date */}

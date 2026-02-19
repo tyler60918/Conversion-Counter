@@ -2,6 +2,8 @@ import DatePicker from "react-datepicker"
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import '../App.css';
+import { useAuth } from "./ui/AuthContext";
+import { supabase } from "./ui/supabase";
 
 function InputPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -9,9 +11,39 @@ function InputPage() {
   const [conversionType, setConversionType] = useState('Accessory');
   const [itemName, setItemName] = useState('');
   const [numAppointments, setNumAppointments] = useState();
+  const { user } = useAuth();
 
-  function handleSubmit() {
+  const handleConversionSubmit = async () => {
     // Do AWS database addition
+    const { data, error } = await supabase.from("Conversions").insert([
+      {
+        user_id: user.id,
+        date: selectedDate,
+        conversion_type: conversionType,
+        item_name: itemName
+      }
+    ]).select('*')
+    if (error) {
+      console.error("Supabase: " + error.message)
+    } else if (data) {
+      console.log("Data added!")
+    }
+  }
+
+  const handleApptsSubmit = async () => {
+    // Do AWS database addition to appointments
+    const { data, error } = await supabase.from("Appointment_Counts").insert([
+      {
+        user_id: user.id,
+        date: selectedDate,
+        num_appts: numAppointments
+      }
+    ]).select('*')
+    if (error) {
+      console.error("Supabase: " + error.message)
+    } else if (data) {
+      console.log("Data added!")
+    }
   }
 
   return (
@@ -57,7 +89,7 @@ function InputPage() {
             <input placeholder="Enter device that was purchased" value={itemName} onChange={(event) => setItemName(event.target.value)} />
           }
 
-          <button onClick={handleSubmit}>
+          <button onClick={(inputType == 'Conversion') ? handleConversionSubmit : handleApptsSubmit}>
             Add item
           </button>
         </>
@@ -66,7 +98,7 @@ function InputPage() {
       {inputType == 'Appointments' &&
         <div>
           <input placeholder="Enter number of appointments" value={numAppointments} onChange={(event) => setNumAppointments(event.target.value)} />
-          <button onClick={handleSubmit}>
+          <button onClick={(inputType == 'Conversion') ? handleConversionSubmit : handleApptsSubmit}>
             Submit
           </button>
         </div>
