@@ -36,3 +36,9 @@ li {
   width: 100%;
   gap: 12px;
 }
+
+.loadingSpinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
