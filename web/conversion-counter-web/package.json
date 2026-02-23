@@ -17,6 +17,7 @@
     "@mui/x-date-pickers": "^8.27.2",
     "@supabase/supabase-js": "^2.95.3",
     "@vitejs/plugin-react": "^4.7.0",
+    "bootstrap": "^5.3.8",
     "dayjs": "^1.11.19",
     "formik": "^2.4.9",
     "framer-motion": "^12.34.0",

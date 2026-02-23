@@ -6,18 +6,18 @@ import { supabase } from "./ui/supabase";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from "dayjs";
-import { VStack, HStack } from '@chakra-ui/react';
+import { VStack, HStack, Button } from '@chakra-ui/react';
 
 function InputPage() {
   const [selectedDate, setSelectedDate] = useState(dayjs());
   const [inputType, setInputType] = useState('');
   const [conversionType, setConversionType] = useState('Accessory');
   const [itemName, setItemName] = useState('');
-  const [numAppointments, setNumAppointments] = useState();
+  const [numAppointments, setNumAppointments] = useState("");
   const { user } = useAuth();
 
   const handleConversionSubmit = async () => {
-    // Do AWS database addition
+    // Do AWS database addition to conversions
     const { data, error } = await supabase.from("Conversions").insert([
       {
         user_id: user.id,
@@ -30,6 +30,7 @@ function InputPage() {
       console.error("Supabase: " + error.message)
     } else if (data) {
       console.log("Data added!")
+      setItemName("")
     }
   }
 
@@ -46,6 +47,7 @@ function InputPage() {
       console.error("Supabase: " + error.message)
     } else if (data) {
       console.log("Data added!")
+      setNumAppointments("")
     }
   }
 
@@ -64,8 +66,11 @@ function InputPage() {
           }}
         />
         <p>Selected Date: {selectedDate?.format("DD MMMM, YYYY")}</p>
-        <select value={inputType} onChange={(event) => setInputType(event.target.value)}>
-          <option value="" disabled>Select an option</option>
+        <select
+          value={inputType}
+          onChange={(event) => setInputType(event.target.value)}
+        >
+          <option value="" disabled>Select an input type</option>
           <option value={'Conversion'}>Conversion</option>
           <option value={'Appointments'}>Number of Appointments</option>
         </select>
@@ -73,46 +78,46 @@ function InputPage() {
         {inputType == 'Conversion' &&
           <>
             <HStack spacing={4}>
-              <button onClick={() => setConversionType('Accessory')}>
+              <Button onClick={() => setConversionType('Accessory')}>
                 Accessory
-              </button>
-              <button onClick={() => setConversionType('AppleCare')}>
+              </Button>
+              <Button onClick={() => setConversionType('AppleCare')}>
                 AppleCare
-              </button>
-              <button onClick={() => setConversionType('Trade-In')}>
+              </Button>
+              <Button onClick={() => setConversionType('Trade-In')}>
                 Trade-In
-              </button>
-              <button onClick={() => setConversionType('Upgrade')}>
+              </Button>
+              <Button onClick={() => setConversionType('Upgrade')}>
                 Upgrade
-              </button>
+              </Button>
             </HStack>
 
             {conversionType == 'Accessory' &&
-              <input placeholder="Enter accessory that was purchased" value={itemName} onChange={(event) => setItemName(event.target.value)} />
+              <input placeholder=" Enter accessory that was purchased " value={itemName} onChange={(event) => setItemName(event.target.value)} />
             }
             {conversionType == 'AppleCare' &&
-              <input placeholder="Enter device AppleCare was added to" value={itemName} onChange={(event) => setItemName(event.target.value)} />
+              <input placeholder=" Enter device AppleCare was added to " value={itemName} onChange={(event) => setItemName(event.target.value)} />
             }
             {conversionType == 'Trade-In' &&
-              <input placeholder="Enter device that was traded-in" value={itemName} onChange={(event) => setItemName(event.target.value)} />
+              <input placeholder=" Enter device that was traded-in " value={itemName} onChange={(event) => setItemName(event.target.value)} />
             }
             {conversionType == 'Upgrade' &&
-              <input placeholder="Enter device that was purchased" value={itemName} onChange={(event) => setItemName(event.target.value)} />
+              <input placeholder=" Enter device that was purchased " value={itemName} onChange={(event) => setItemName(event.target.value)} />
             }
 
-            <button onClick={(inputType == 'Conversion') ? handleConversionSubmit : handleApptsSubmit}>
+            <Button onClick={(inputType == 'Conversion') ? handleConversionSubmit : handleApptsSubmit}>
               Add item
-            </button>
+            </Button>
           </>
         }
 
         {inputType == 'Appointments' &&
-          <div>
+          <VStack>
             <input placeholder="Enter number of appointments" value={numAppointments} onChange={(event) => setNumAppointments(event.target.value)} />
-            <button onClick={(inputType == 'Conversion') ? handleConversionSubmit : handleApptsSubmit}>
+            <Button onClick={(inputType == 'Conversion') ? handleConversionSubmit : handleApptsSubmit}>
               Submit
-            </button>
-          </div>
+            </Button>
+          </VStack>
         }
       </VStack>
     </LocalizationProvider>

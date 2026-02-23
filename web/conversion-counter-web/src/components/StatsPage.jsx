@@ -48,7 +48,7 @@ function StatsPage() {
     }
 
     const getAppointmentData = async () => {
-      const { data, error } = await supabase.from('Appointment_Counts').select('*').eq('date', searchDate).eq('user_id', user.id);
+      const { data, error } = await supabase.from('Appointment_Counts').select('*').eq('date', searchDate).eq('user_id', user.id).order('created_at', { ascending: false });
 
       if (data) {
         setNumAppts(data[0] ? (data[0].num_appts) : 0)

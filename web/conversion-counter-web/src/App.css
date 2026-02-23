@@ -21,7 +21,7 @@ nav {
 }
 
 input {
-  width: 75%;
+  field-sizing: content;
 }
 
 li {
@@ -41,4 +41,18 @@ li {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.chakra-button {
+  border: 1px solid black;
+  padding: 2px 4px;
+}
+
+.chakra-button:hover {
+  background-color: rgb(222, 123, 242);
+  color: white;
+}
+
+select {
+  color: rgb(222, 123, 242);
 }
