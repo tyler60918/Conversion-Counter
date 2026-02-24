@@ -56,3 +56,16 @@ li {
 select {
   color: rgb(222, 123, 242);
 }
+
+.stats-bottom {
+  position: fixed;
+  bottom: 20%;
+  display: flex;
+}
+
+.conv-list {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 50vh
+}

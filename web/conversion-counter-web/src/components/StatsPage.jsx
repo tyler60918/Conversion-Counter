@@ -1,4 +1,4 @@
-import { HStack, VStack, Spinner, Skeleton, Stack } from "@chakra-ui/react";
+import { HStack, VStack, Skeleton, Button } from "@chakra-ui/react";
 import { useEffect, useState } from 'react';
 import { supabase } from "./ui/supabase";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -27,6 +27,7 @@ function StatsPage() {
   const [numAppts, setNumAppts] = useState(0)
   const [editMode, setEditMode] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [filter, setFilter] = useState("")
 
   const { user } = useAuth()
 
@@ -36,7 +37,18 @@ function StatsPage() {
       return
     }
     const getConversionData = async () => {
-      const { data, error } = await supabase.from('Conversions').select('*').eq('date', searchDate).eq('user_id', user.id);
+      let query = supabase
+        .from('Conversions')
+        .select('*')
+        .eq('date', searchDate)
+        .eq('user_id', user.id)
+        .order('conversion_type', { ascending: true })
+
+      if (filter != 'All' && filter != "") {
+        query.eq('conversion_type', filter);
+      }
+
+      const { data, error } = await query
 
       if (data) {
         setRows(data)
@@ -48,7 +60,14 @@ function StatsPage() {
     }
 
     const getAppointmentData = async () => {
-      const { data, error } = await supabase.from('Appointment_Counts').select('*').eq('date', searchDate).eq('user_id', user.id).order('created_at', { ascending: false });
+      let query = supabase
+        .from('Appointment_Counts')
+        .select('*')
+        .eq('date', searchDate)
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+
+      const { data, error } = await query
 
       if (data) {
         setNumAppts(data[0] ? (data[0].num_appts) : 0)
@@ -62,17 +81,7 @@ function StatsPage() {
     Promise.all([getConversionData(), getAppointmentData()]).then(() => {
       setLoading(false)
     })
-  }, [searchDate, editMode])
-
-  // if (loading) {
-  //   return (
-  //     <Stack spacing={3}>
-  //       <Skeleton height="20px" />
-  //       <Skeleton height="20px" />
-  //       <Skeleton height="20px" />
-  //     </Stack>
-  //   )
-  // }
+  }, [searchDate, editMode, filter])
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -81,9 +90,17 @@ function StatsPage() {
           Stats Page
         </h1>
         <HStack>
-          <button>
-            Filter
-          </button>
+          <select
+            value={filter}
+            onChange={(event) => setFilter(event.target.value)}
+          >
+            <option value="" disabled>Filter</option>
+            <option value={'All'}>All</option>
+            <option value={'Accessory'}>Accessories</option>
+            <option value={'AppleCare'}>AppleCare</option>
+            <option value={'Trade-In'}>Trade-Ins</option>
+            <option value={'Upgrade'}>Upgrades</option>
+          </select>
           <button onClick={() => { setEditMode(!editMode) }}>
             {editMode ? "Done" : "Edit"}
           </button>
@@ -91,7 +108,7 @@ function StatsPage() {
         <h2>
           {searchDate?.format("DD MMMM, YYYY")}
         </h2>
-        <div>
+        <div className="conv-list">
           <Skeleton isLoaded={!loading}>
             {rows.map((row) => (
               <li key={row.id}>
@@ -102,19 +119,26 @@ function StatsPage() {
             ))}
           </Skeleton>
         </div>
-        <p>Appointments: {numAppts}</p>
-        <p>Conversion %: {numAppts ? ((rows.length / numAppts) * 100) : 0}%</p>
-        <HStack>
-          <DatePicker
-            label="Stats Date"
-            value={searchDate}
-            onChange={(date) => setSearchDate(date)}
-            slotProps={{
-              textField: { fullWidth: true }
-            }}
-          />
-          {/* Stepper for date */}
-        </HStack>
+        <VStack className="stats-bottom">
+          <p>Appointments: {numAppts}</p>
+          <p>Conversion %: {numAppts ? ((rows.length / numAppts) * 100) : 0}%</p>
+          <HStack>
+            <DatePicker
+              label="Stats Date"
+              value={searchDate}
+              onChange={(date) => setSearchDate(date)}
+              slotProps={{
+                textField: { fullWidth: true }
+              }}
+            />
+            <Button onClick={() => { setSearchDate(searchDate.subtract(1, 'day')) }}>
+              -
+            </Button>
+            <Button onClick={() => { setSearchDate(searchDate.add(1, 'day')) }}>
+              +
+            </Button>
+          </HStack>
+        </VStack>
       </VStack>
     </LocalizationProvider>
   )
