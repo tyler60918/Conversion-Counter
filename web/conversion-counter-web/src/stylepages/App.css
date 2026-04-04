@@ -24,25 +24,6 @@ input {
   field-sizing: content;
 }
 
-li {
-  list-style-type: none;
-}
-
-.formButtons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 80vh;
-  width: 100%;
-  gap: 12px;
-}
-
-.loadingSpinner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .chakra-button {
   border: 1px solid black;
   padding: 2px 4px;
@@ -55,17 +36,4 @@ li {
 
 select {
   color: rgb(222, 123, 242);
-}
-
-.stats-bottom {
-  position: fixed;
-  bottom: 20%;
-  display: flex;
-}
-
-.conv-list {
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  height: 50vh
 }

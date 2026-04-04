@@ -1,6 +1,6 @@
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useState } from "react";
-import '../App.css';
+import '../stylepages/App.css';
 import { useAuth } from "./ui/AuthContext";
 import { supabase } from "./ui/supabase";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';

@@ -1,0 +1,31 @@
+.landing {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 80vh;
+    gap: 20px;
+}
+
+.title {
+    font-weight: bold;
+    font-size: x-large;
+}
+
+.logo {
+    max-width: 100px;
+    border-radius: 20px;
+}
+
+.description {
+    color: gray;
+    max-width: 40%;
+}
+
+.formButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 12px;
+}

@@ -2,7 +2,7 @@ import { HStack, VStack, Skeleton, Button } from "@chakra-ui/react";
 import { useEffect, useState } from 'react';
 import { supabase } from "./ui/supabase";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import '../App.css';
+import '../stylepages/StatsPage.css';
 import { useAuth } from "./ui/AuthContext"
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -22,7 +22,7 @@ const deleteData = async (rowID) => {
 function StatsPage() {
   const today = new Date();
 
-  const [searchDate, setSearchDate] = useState(dayjs)
+  const [searchDate, setSearchDate] = useState(dayjs())
   const [rows, setRows] = useState([])
   const [numAppts, setNumAppts] = useState(0)
   const [editMode, setEditMode] = useState(false)
