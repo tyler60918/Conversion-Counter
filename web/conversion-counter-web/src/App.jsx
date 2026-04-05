@@ -7,6 +7,7 @@ import StatsPage from './components/StatsPage';
 import GraphPage from './components/GraphPage';
 import { Box, Button, HStack } from "@chakra-ui/react"
 import ProtectedRoute from './components/ui/ProtectedRoute';
+import PublicRoute from './components/ui/PublicRoute';
 import { supabase } from './components/ui/supabase';
 import { useAuth } from "./components/ui/AuthContext";
 
@@ -50,7 +51,11 @@ function App() {
         </HStack>
       </Box>}
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={
+          // <PublicRoute>
+          <LandingPage />
+          // </PublicRoute>
+        } />
         <Route path="/login" element={<LoginPage />} />
         <Route
           path="/input"

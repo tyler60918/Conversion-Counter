@@ -4,11 +4,22 @@ import "../stylepages/LoginPage.css"
 import LoginForm from "./LoginForm"
 import { useAuth } from "./ui/AuthContext";
 import RegisterForm from "./RegisterForm";
+import { supabase } from '../components/ui/supabase';
 
 function LoginPage() {
   const { user } = useAuth()
   const [emailLogin, setEmailLogin] = useState(false)
   const [emailRegister, setEmailRegister] = useState(false)
+
+  async function signInWithGoogle() {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${import.meta.env.VITE_APP_URL}/input` // Redirects to either the production website if production build or localserver if in dev.
+      }
+    })
+    if (error) console.error(error.message)
+  }
 
   return (
     <div className="login-page">
@@ -16,7 +27,7 @@ function LoginPage() {
         <img src="../../apple-touch-icon.png" className="logo" />
         <h2 className="title">Sign up for Genius Bar Conversion Counter</h2>
         {!emailLogin && !emailRegister && <div className="login-buttons">
-          <Button>
+          <Button onClick={signInWithGoogle}>
             Continue with Google
           </Button>
           <Button>
