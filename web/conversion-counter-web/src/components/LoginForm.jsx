@@ -10,7 +10,7 @@ import {
 import * as Yup from 'yup';
 import { useFormik } from "formik";
 import { supabase } from "./ui/supabase";
-import "../stylepages/LoginPage.css"
+import "../stylesheets/LoginPage.css"
 import { useNavigate } from 'react-router-dom';
 
 function LoginForm() {

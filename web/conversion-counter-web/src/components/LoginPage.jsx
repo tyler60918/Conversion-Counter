@@ -1,6 +1,6 @@
 import { Box, Button } from "@chakra-ui/react"
 import { useState } from "react"
-import "../stylepages/LoginPage.css"
+import "../stylesheets/LoginPage.css"
 import LoginForm from "./LoginForm"
 import { useAuth } from "./ui/AuthContext";
 import RegisterForm from "./RegisterForm";

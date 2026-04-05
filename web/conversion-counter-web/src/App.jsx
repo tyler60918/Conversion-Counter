@@ -1,4 +1,4 @@
-import './stylepages/App.css';
+import './stylesheets/App.css';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import LoginPage from './components/LoginPage';

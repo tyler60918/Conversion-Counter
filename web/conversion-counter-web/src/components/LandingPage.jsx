@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import "../stylepages/LandingPage.css";
+import "../stylesheets/LandingPage.css";
 import { Button } from "@chakra-ui/react";
 import { useAuth } from "../components/ui/AuthContext";
 
