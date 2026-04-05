@@ -49,6 +49,10 @@ input {
   padding: 8px 8px
 }
 
+.error-message {
+  color: red
+}
+
 .chakra-form__error-message {
   color: red
 }

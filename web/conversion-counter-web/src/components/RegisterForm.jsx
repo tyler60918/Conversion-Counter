@@ -10,8 +10,11 @@ import {
 import * as Yup from 'yup';
 import { useFormik } from "formik";
 import { supabase } from "./ui/supabase";
+import { useState } from "react";
 
 function RegisterForm() {
+  const [error, setError] = useState("")
+
   async function signUpNewUser(newFirstName, newLastName, newEmail, newPassword) {
     const { data, error } = await supabase.auth.signUp({
       email: newEmail,
@@ -26,6 +29,7 @@ function RegisterForm() {
 
     if (error) {
       console.error("Supabase: " + error.message)
+      setError(error)
     } else if (data) {
       console.log("New user registered!")
       console.log(data)
@@ -107,6 +111,7 @@ function RegisterForm() {
           >
             Create Account
           </Button>
+          {error != "" && <p className="error-message">{error.message}</p>}
         </VStack>
       </form>
     </Box>
