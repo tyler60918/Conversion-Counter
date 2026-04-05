@@ -1,5 +1,5 @@
 import './stylepages/App.css';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import InputPage from './components/InputPage';
 import StatsPage from './components/StatsPage';
@@ -11,6 +11,8 @@ import { useAuth } from "./components/ui/AuthContext";
 
 function App() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isLandingPage = location.pathname === '/';
   const { user } = useAuth()
 
   async function handleLogout() {
@@ -36,14 +38,14 @@ function App() {
           Logout
         </Button>
       )}
-      <Box as="nav" mb={6}>
+      {!isLandingPage && <Box as="nav" mb={6}>
         <HStack spacing={4}>
           <Button onClick={() => navigate('/')}>Home</Button>
           <Button onClick={() => navigate('/input')}>Input</Button>
           <Button onClick={() => navigate('/stats')}>Stats</Button>
           <Button onClick={() => navigate('/graph')}>Graph</Button>
         </HStack>
-      </Box>
+      </Box>}
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route

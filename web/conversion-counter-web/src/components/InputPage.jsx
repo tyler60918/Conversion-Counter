@@ -17,7 +17,7 @@ function InputPage() {
   const { user } = useAuth();
 
   const handleConversionSubmit = async () => {
-    // Do AWS database addition to conversions
+    // Do Supabase database addition to conversions
     const { data, error } = await supabase.from("Conversions").insert([
       {
         user_id: user.id,
@@ -35,7 +35,7 @@ function InputPage() {
   }
 
   const handleApptsSubmit = async () => {
-    // Do AWS database addition to appointments
+    // Do Supabase database addition to appointments
     const { data, error } = await supabase.from("Appointment_Counts").insert([
       {
         user_id: user.id,
