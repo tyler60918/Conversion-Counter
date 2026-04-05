@@ -56,7 +56,7 @@ function RegisterForm() {
         e.preventDefault()
         regFormik.handleSubmit()
       }}>
-        <VStack spacing={4}>
+        <VStack spacing={3}>
           <FormControl isInvalid={regFormik.touched.firstName && regFormik.errors.firstName}>
             <FormLabel htmlFor="firstName">First Name</FormLabel>
             <Input
@@ -105,7 +105,7 @@ function RegisterForm() {
             colorScheme="purple"
             width="full"
           >
-            Submit
+            Create Account
           </Button>
         </VStack>
       </form>

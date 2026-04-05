@@ -1,6 +1,7 @@
 import './stylepages/App.css';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
+import LoginPage from './components/LoginPage';
 import InputPage from './components/InputPage';
 import StatsPage from './components/StatsPage';
 import GraphPage from './components/GraphPage';
@@ -13,6 +14,7 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const isLandingPage = location.pathname === '/';
+  const isLoginPage = location.pathname === '/login';
   const { user } = useAuth()
 
   async function handleLogout() {
@@ -28,7 +30,8 @@ function App() {
 
   return (
     <Box minH="100vh">
-      {user && (
+      {/* Don't load logout button on landing, login page, or if not signed in */}
+      {!isLandingPage && !isLoginPage && user && (
         <Button
           position="fixed"
           top="20px"
@@ -38,9 +41,9 @@ function App() {
           Logout
         </Button>
       )}
-      {!isLandingPage && <Box as="nav" mb={6}>
+      {/* Don't load nav bar on landing or login page */}
+      {!isLandingPage && !isLoginPage && <Box as="nav" mb={6}>
         <HStack spacing={4}>
-          <Button onClick={() => navigate('/')}>Home</Button>
           <Button onClick={() => navigate('/input')}>Input</Button>
           <Button onClick={() => navigate('/stats')}>Stats</Button>
           <Button onClick={() => navigate('/graph')}>Graph</Button>
@@ -48,6 +51,7 @@ function App() {
       </Box>}
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route
           path="/input"
           element={

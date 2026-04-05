@@ -1,12 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import "../stylepages/LandingPage.css";
-import LoginForm from "./LoginForm";
-import RegisterForm from "./RegisterForm";
 import { Button } from "@chakra-ui/react";
-import { useAuth } from "./ui/AuthContext";
+import { useAuth } from "../components/ui/AuthContext";
 
 function LandingPage() {
   const [submitType, setSubmitType] = useState('')
+  const navigate = useNavigate();
   const { user } = useAuth()
 
   return (
@@ -19,7 +19,13 @@ function LandingPage() {
         Track your individual conversions including accessories, AppleCare, trade-ins, and
         upgrades, along with your number of appointments and see statistics over time
       </p>
-      <Button onClick={{}}>
+      <Button onClick={() => {
+        if (user) {
+          navigate("/input")
+        } else {
+          navigate("/login")
+        }
+      }}>
         Sign in to Continue
       </Button>
     </div>

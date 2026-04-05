@@ -10,8 +10,11 @@ import {
 import * as Yup from 'yup';
 import { useFormik } from "formik";
 import { supabase } from "./ui/supabase";
+import "../stylepages/LoginPage.css"
+import { useNavigate } from 'react-router-dom';
 
 function LoginForm() {
+  const navigate = useNavigate()
   async function signInUser(userEmail, userPassword) {
     const { data, error } = await supabase.auth.signInWithPassword({
       email: userEmail,
@@ -23,6 +26,7 @@ function LoginForm() {
     } else if (data) {
       console.log("Signed in!")
       console.log(data)
+      navigate("/input")
     }
   }
 
@@ -48,7 +52,7 @@ function LoginForm() {
       }}>
         <VStack spacing={4}>
           <FormControl isInvalid={signInFormik.touched.email && signInFormik.errors.email}>
-            <FormLabel htmlFor="email">Email</FormLabel>
+            <FormLabel htmlFor="email" >Email</FormLabel>
             <Input
               id="email"
               name="email"
@@ -75,7 +79,7 @@ function LoginForm() {
             colorScheme="purple"
             width="full"
           >
-            Submit
+            Log in
           </Button>
         </VStack>
       </form>
