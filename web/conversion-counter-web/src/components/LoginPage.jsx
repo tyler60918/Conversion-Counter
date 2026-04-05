@@ -30,9 +30,6 @@ function LoginPage() {
           <Button onClick={signInWithGoogle}>
             Continue with Google
           </Button>
-          <Button>
-            Continue with Apple
-          </Button>
           <Button onClick={() => setEmailRegister(true)}>
             Continue with Email
           </Button>
