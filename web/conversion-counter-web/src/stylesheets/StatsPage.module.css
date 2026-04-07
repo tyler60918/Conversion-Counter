@@ -1,10 +1,10 @@
-.stats-bottom {
+.statsBottom {
     position: fixed;
     bottom: 20%;
     display: flex;
 }
 
-.conv-list {
+.convList {
     justify-content: center;
     align-items: center;
     display: flex;

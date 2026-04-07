@@ -2,7 +2,7 @@ import { HStack, VStack, Skeleton, Button } from "@chakra-ui/react";
 import { useEffect, useState } from 'react';
 import { supabase } from "./ui/supabase";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import '../stylesheets/StatsPage.css';
+import styles from '../stylesheets/StatsPage.module.css';
 import { useAuth } from "./ui/AuthContext"
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -108,7 +108,7 @@ function StatsPage() {
         <h2>
           {searchDate?.format("DD MMMM, YYYY")}
         </h2>
-        <div className="conv-list">
+        <div className={styles.convList}>
           <Skeleton isLoaded={!loading}>
             {rows.map((row) => (
               <li key={row.id}>
@@ -119,7 +119,7 @@ function StatsPage() {
             ))}
           </Skeleton>
         </div>
-        <VStack className="stats-bottom">
+        <VStack className={styles.statsBottom}>
           <p>Appointments: {numAppts}</p>
           <p>Conversion %: {numAppts ? ((rows.length / numAppts) * 100) : 0}%</p>
           <HStack>

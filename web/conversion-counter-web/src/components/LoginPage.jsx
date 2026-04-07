@@ -1,6 +1,6 @@
 import { Box, Button } from "@chakra-ui/react"
 import { useState } from "react"
-import "../stylesheets/LoginPage.css"
+import styles from "../stylesheets/LoginPage.module.css"
 import LoginForm from "./LoginForm"
 import { useAuth } from "./ui/AuthContext";
 import RegisterForm from "./RegisterForm";
@@ -22,11 +22,11 @@ function LoginPage() {
   }
 
   return (
-    <div className="login-page">
-      <Box className="login-box">
-        <img src="../../apple-touch-icon.png" className="logo" />
-        <h2 className="title">Sign up for Genius Bar Conversion Counter</h2>
-        {!emailLogin && !emailRegister && <div className="login-buttons">
+    <div className={styles.loginPage}>
+      <Box className={styles.loginBox}>
+        <img src="../../apple-touch-icon.png" className={styles.logo} />
+        <h2 className={styles.title}>Sign up for Genius Bar Conversion Counter</h2>
+        {!emailLogin && !emailRegister && <div className={styles.loginButtons}>
           <Button onClick={signInWithGoogle}>
             Continue with Google
           </Button>
@@ -36,7 +36,7 @@ function LoginPage() {
         </div>}
         {emailRegister && <RegisterForm />}
         {emailLogin && <LoginForm />}
-        {emailRegister && <div className="login-instead">
+        {emailRegister && <div className={styles.loginInstead}>
           <p>Already have an account?</p>
           <Button onClick={() => {
             setEmailLogin(true)

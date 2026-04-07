@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import "../stylesheets/LandingPage.css";
+import styles from "../stylesheets/LandingPage.module.css";
 import { Button } from "@chakra-ui/react";
 import { useAuth } from "../components/ui/AuthContext";
 
@@ -10,12 +10,12 @@ function LandingPage() {
   const { user } = useAuth()
 
   return (
-    <div className="landing">
-      <img src="../../apple-touch-icon.png" className="logo" />
-      <h2 className="title">
+    <div className={styles.landing}>
+      <img src="../../apple-touch-icon.png" className={styles.logo} />
+      <h2 className={styles.title}>
         Conversion Counter
       </h2>
-      <p className="description">
+      <p className={styles.description}>
         Track your individual conversions including accessories, AppleCare, trade-ins, and
         upgrades, along with your number of appointments and see statistics over time
       </p>

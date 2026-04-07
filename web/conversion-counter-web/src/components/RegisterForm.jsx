@@ -11,6 +11,7 @@ import * as Yup from 'yup';
 import { useFormik } from "formik";
 import { supabase } from "./ui/supabase";
 import { useState } from "react";
+import styles from "../stylesheets/LoginPage.module.css"
 
 function RegisterForm() {
   const [error, setError] = useState("")
@@ -111,7 +112,7 @@ function RegisterForm() {
           >
             Create Account
           </Button>
-          {error != "" && <p className="error-message">{error.message}</p>}
+          {error != "" && <p className={styles.errorMessage}>{error.message}</p>}
         </VStack>
       </form>
     </Box>

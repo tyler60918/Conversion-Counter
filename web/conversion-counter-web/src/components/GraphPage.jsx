@@ -3,7 +3,7 @@ import { HStack, VStack, Skeleton, Button } from "@chakra-ui/react";
 import { useEffect, useState } from 'react';
 import { supabase } from "./ui/supabase";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import '../stylesheets/App.css';
+import styles from '../stylesheets/GraphPage.module.css';
 import { useAuth } from "./ui/AuthContext"
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';

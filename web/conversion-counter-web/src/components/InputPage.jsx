@@ -1,6 +1,6 @@
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useState } from "react";
-import '../stylesheets/InputPage.css';
+import styles from '../stylesheets/InputPage.module.css';
 import { useAuth } from "./ui/AuthContext";
 import { supabase } from "./ui/supabase";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -16,6 +16,12 @@ function InputPage() {
   const [numAppointments, setNumAppointments] = useState("");
   const { user } = useAuth();
   const convOptions = ['Accessory', 'AppleCare', 'Trade-In', 'Upgrade']
+  const convPhrase = {
+    'Accessory': "Enter accessory that was purchased",
+    'AppleCare': "Enter device AppleCare was added to",
+    'Trade-In': "Enter device that was traded in",
+    'Upgrade': "Enter device that was upgraded to"
+  }
 
   const handleConversionSubmit = async () => {
     // Do Supabase database addition to conversions
@@ -59,9 +65,9 @@ function InputPage() {
           Log Conversion
         </h2>
         <p>Record a sale from your Genius Bar Appointment</p>
-        <Box className="appointment-box">
+        <Box className={styles.appointmentBox} >
+          <p>Date</p>
           <DatePicker
-            label="Input Date"
             value={selectedDate}
             onChange={(date) => setSelectedDate(date)}
             slotProps={{
@@ -69,18 +75,21 @@ function InputPage() {
             }}
           />
           <label htmlFor='apptField'>Appointments Taken</label>
-          <input type='number' placeholder='0' min={0} id='apptField' value={numAppointments} onChange={(event) => setNumAppointments(event.target.value)} />
-          <Button onClick={handleApptsSubmit} >
-            Save
-          </Button>
-          <p>Current: {numAppointments}</p>
+          <HStack>
+            <input className={styles.apptField} type='number' placeholder='0' min={0} id='apptField' value={numAppointments} onChange={(event) => setNumAppointments(event.target.value)} />
+            <Button id={styles.apptSave} onClick={handleApptsSubmit} >
+              Save
+            </Button>
+            <p>Current: {numAppointments}</p>
+          </HStack>
         </Box>
-        <Box className="conversion-box">
+        <Box className={styles.conversionBox}>
           <h2>Sale Type</h2>
           <VStack>
             <HStack>
               {convOptions.slice(0, 2).map((option) => (
                 <Button
+                  className={styles.convTypeButton}
                   key={option}
                   onClick={() => {
                     setSelectedButton(option)
@@ -96,6 +105,7 @@ function InputPage() {
             <HStack>
               {convOptions.slice(2, 4).map((option) => (
                 <Button
+                  className={styles.convTypeButton}
                   key={option}
                   onClick={() => {
                     setSelectedButton(option)
@@ -111,18 +121,7 @@ function InputPage() {
           </VStack>
 
           <h2>Item Description</h2>
-          {conversionType == 'Accessory' &&
-            <input placeholder=" Enter accessory that was purchased " value={itemName} onChange={(event) => setItemName(event.target.value)} />
-          }
-          {conversionType == 'AppleCare' &&
-            <input placeholder=" Enter device AppleCare was added to " value={itemName} onChange={(event) => setItemName(event.target.value)} />
-          }
-          {conversionType == 'Trade-In' &&
-            <input placeholder=" Enter device that was traded-in " value={itemName} onChange={(event) => setItemName(event.target.value)} />
-          }
-          {conversionType == 'Upgrade' &&
-            <input placeholder=" Enter device that was purchased " value={itemName} onChange={(event) => setItemName(event.target.value)} />
-          }
+          <input id={styles.itemDescripInput} placeholder={convPhrase[conversionType]} value={itemName} onChange={(event) => setItemName(event.target.value)} />
           <Button onClick={handleConversionSubmit}>
             Add Conversion
           </Button>
