@@ -60,12 +60,16 @@ function InputPage() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <VStack spacing={5}>
-        <h2>
-          Log Conversion
-        </h2>
-        <p>Record a sale from your Genius Bar Appointment</p>
-        <Box className={styles.appointmentBox} >
+      <VStack spacing={5} alignItems='stretch' w='100%'>
+        <VStack paddingTop='15%'>
+          <h2>
+            Log Conversion
+          </h2>
+          <p className={styles.pageDescription}>
+            Record a sale from your Genius Bar Appointment
+          </p>
+        </VStack>
+        <Box className={styles.appointmentBox} w='100%'>
           <p>Date</p>
           <DatePicker
             value={selectedDate}
@@ -75,7 +79,7 @@ function InputPage() {
             }}
           />
           <label htmlFor='apptField'>Appointments Taken</label>
-          <HStack>
+          <HStack justifyContent="flex-start" width='100%'>
             <input className={styles.apptField} type='number' placeholder='0' min={0} id='apptField' value={numAppointments} onChange={(event) => setNumAppointments(event.target.value)} />
             <Button id={styles.apptSave} onClick={handleApptsSubmit} >
               Save
@@ -83,7 +87,7 @@ function InputPage() {
             <p>Current: {numAppointments}</p>
           </HStack>
         </Box>
-        <Box className={styles.conversionBox}>
+        <Box className={styles.conversionBox} w='100%'>
           <h2>Sale Type</h2>
           <VStack>
             <HStack>
@@ -97,12 +101,19 @@ function InputPage() {
                   }}
                   bg={selectedButton === option ? '#2F6DDE' : '#fafafa'}
                   color={selectedButton === option ? 'white' : 'black'}
+                  border='1px solid #e2e4e8'
+                  width='100%'
+                  _hover={selectedButton === option ? {} : {
+                    bg: '#f1f2f4',
+                    color: 'black',
+                    border: '1px solid #e2e4e8'
+                  }}
                 >
                   {option}
                 </Button>
               ))}
             </HStack>
-            <HStack>
+            <HStack width='100%'>
               {convOptions.slice(2, 4).map((option) => (
                 <Button
                   className={styles.convTypeButton}
@@ -113,6 +124,13 @@ function InputPage() {
                   }}
                   bg={selectedButton === option ? '#2F6DDE' : '#fafafa'}
                   color={selectedButton === option ? 'white' : 'black'}
+                  border='1px solid #e2e4e8'
+                  width='100%'
+                  _hover={selectedButton === option ? {} : {
+                    bg: '#f1f2f4',
+                    color: 'black',
+                    border: '1px solid #e2e4e8'
+                  }}
                 >
                   {option}
                 </Button>
@@ -122,7 +140,7 @@ function InputPage() {
 
           <h2>Item Description</h2>
           <input id={styles.itemDescripInput} placeholder={convPhrase[conversionType]} value={itemName} onChange={(event) => setItemName(event.target.value)} />
-          <Button onClick={handleConversionSubmit}>
+          <Button id={styles.addConvButton} onClick={handleConversionSubmit}>
             Add Conversion
           </Button>
         </Box>

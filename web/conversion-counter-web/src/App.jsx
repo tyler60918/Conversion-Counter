@@ -7,7 +7,6 @@ import StatsPage from './components/StatsPage';
 import GraphPage from './components/GraphPage';
 import { Box, Button, HStack } from "@chakra-ui/react"
 import ProtectedRoute from './components/ui/ProtectedRoute';
-import PublicRoute from './components/ui/PublicRoute';
 import { supabase } from './components/ui/supabase';
 import { useAuth } from "./components/ui/AuthContext";
 
@@ -30,7 +29,7 @@ function App() {
 
 
   return (
-    <Box minH="100vh">
+    <Box minH="100vh" w='100%'>
       {/* Don't load logout button on landing, login page, or if not signed in */}
       {!isLandingPage && !isLoginPage && user && (
         <Button
@@ -51,12 +50,14 @@ function App() {
         </HStack>
       </Box>}
       <Routes>
-        <Route path="/" element={
-          // <PublicRoute>
-          <LandingPage />
-          // </PublicRoute>
-        } />
-        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/"
+          element={<LandingPage />}
+        />
+        <Route
+          path="/login"
+          element={<LoginPage />}
+        />
         <Route
           path="/input"
           element={
