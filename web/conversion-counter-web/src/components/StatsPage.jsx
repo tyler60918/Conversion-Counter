@@ -85,10 +85,20 @@ function StatsPage() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <VStack>
-        <h1>
-          Stats Page
-        </h1>
+      <VStack paddingTop="25%">
+        <h2>
+          Daily Stats
+        </h2>
+        <p className={styles.description}>
+          View your conversion performance for a specific day
+        </p>
+        <DatePicker
+          value={searchDate}
+          onChange={(date) => setSearchDate(date)}
+          slotProps={{
+            textField: { fullWidth: true }
+          }}
+        />
         <HStack>
           <select
             value={filter}
@@ -123,14 +133,6 @@ function StatsPage() {
           <p>Appointments: {numAppts}</p>
           <p>Conversion %: {numAppts ? ((rows.length / numAppts) * 100) : 0}%</p>
           <HStack>
-            <DatePicker
-              label="Stats Date"
-              value={searchDate}
-              onChange={(date) => setSearchDate(date)}
-              slotProps={{
-                textField: { fullWidth: true }
-              }}
-            />
             <Button onClick={() => { setSearchDate(searchDate.subtract(1, 'day')) }}>
               -
             </Button>

@@ -15,6 +15,9 @@ function App() {
   const location = useLocation();
   const isLandingPage = location.pathname === '/';
   const isLoginPage = location.pathname === '/login';
+  const isInputPage = location.pathname === '/input';
+  const isStatsPage = location.pathname === '/stats';
+  const isGraphPage = location.pathname === '/graph';
   const { user } = useAuth()
 
   async function handleLogout() {
@@ -30,23 +33,44 @@ function App() {
 
   return (
     <Box minH="100vh" w='100%'>
-      {/* Don't load logout button on landing, login page, or if not signed in */}
-      {!isLandingPage && !isLoginPage && user && (
-        <Button
-          position="fixed"
-          top="20px"
-          right="20px"
-          onClick={handleLogout}
-        >
-          Logout
-        </Button>
-      )}
       {/* Don't load nav bar on landing or login page */}
       {!isLandingPage && !isLoginPage && <Box as="nav" mb={6}>
         <HStack spacing={4}>
-          <Button onClick={() => navigate('/input')}>Input</Button>
-          <Button onClick={() => navigate('/stats')}>Stats</Button>
-          <Button onClick={() => navigate('/graph')}>Graph</Button>
+          <img className="logo" src='../apple-touch-icon.png' />
+          <p id='appTitle'>Conversion Counter</p>
+          <Button
+            className="navButton"
+            onClick={() => navigate('/input')}
+            bg={isInputPage ? '#e5ecf8' : 'white'}
+            color={isInputPage ? '#3973df' : 'gray'}
+          >
+            Input
+          </Button>
+          <Button
+            className="navButton"
+            onClick={() => navigate('/stats')}
+            bg={isStatsPage ? '#e5ecf8' : 'white'}
+            color={isStatsPage ? '#3973df' : 'gray'}
+          >
+            Stats
+          </Button>
+          <Button
+            className="navButton"
+            onClick={() => navigate('/graph')}
+            bg={isGraphPage ? '#e5ecf8' : 'white'}
+            color={isGraphPage ? '#3973df' : 'gray'}
+          >
+            Trends
+          </Button>
+          <p id='userName'>
+            {user.user_metadata.first_name}
+          </p>
+          <Button
+            id="logoutButton"
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
         </HStack>
       </Box>}
       <Routes>

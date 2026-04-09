@@ -14,3 +14,8 @@
 li {
     list-style-type: none;
 }
+
+.description {
+    color: gray;
+    font-size: 15px;
+}

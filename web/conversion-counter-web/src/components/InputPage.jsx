@@ -61,7 +61,7 @@ function InputPage() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <VStack spacing={5} alignItems='stretch' w='100%'>
-        <VStack paddingTop='15%'>
+        <VStack paddingTop='30%'>
           <h2>
             Log Conversion
           </h2>
@@ -88,7 +88,7 @@ function InputPage() {
           </HStack>
         </Box>
         <Box className={styles.conversionBox} w='100%'>
-          <h2>Sale Type</h2>
+          <p>Sale Type</p>
           <VStack>
             <HStack>
               {convOptions.slice(0, 2).map((option) => (
@@ -138,7 +138,7 @@ function InputPage() {
             </HStack>
           </VStack>
 
-          <h2>Item Description</h2>
+          <p>Item Description</p>
           <input id={styles.itemDescripInput} placeholder={convPhrase[conversionType]} value={itemName} onChange={(event) => setItemName(event.target.value)} />
           <Button id={styles.addConvButton} onClick={handleConversionSubmit}>
             Add Conversion
