@@ -1,4 +1,4 @@
-import { HStack, VStack, Skeleton, Button } from "@chakra-ui/react";
+import { HStack, VStack, Skeleton, Button, Box } from "@chakra-ui/react";
 import { useEffect, useState } from 'react';
 import { supabase } from "./ui/supabase";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -100,23 +100,34 @@ function StatsPage() {
           }}
         />
         <HStack>
-          <select
-            value={filter}
-            onChange={(event) => setFilter(event.target.value)}
-          >
-            <option value="" disabled>Filter</option>
-            <option value={'All'}>All</option>
-            <option value={'Accessory'}>Accessories</option>
-            <option value={'AppleCare'}>AppleCare</option>
-            <option value={'Trade-In'}>Trade-Ins</option>
-            <option value={'Upgrade'}>Upgrades</option>
-          </select>
-          <button onClick={() => { setEditMode(!editMode) }}>
-            {editMode ? "Done" : "Edit"}
-          </button>
+          <Box className={styles.statsBox}>
+            <p className={styles.statDescription}>
+              CONVERSIONS
+            </p>
+            <p className={styles.statScore}>
+              {rows.length}
+            </p>
+          </Box>
+          <Box className={styles.statsBox}>
+            <p className={styles.statDescription}>
+              APPOINTMENTS
+            </p>
+            <p className={styles.statScore}>
+              {numAppts}
+            </p>
+          </Box>
+          <Box className={styles.statsBox}>
+            <p className={styles.statDescription}>
+              RATE
+            </p>
+            <p className={styles.statScore}>
+              {numAppts ? ((rows.length / numAppts) * 100) + "%" : "--"}
+            </p>
+          </Box>
         </HStack>
+
         <h2>
-          {searchDate?.format("DD MMMM, YYYY")}
+          Breakdown
         </h2>
         <div className={styles.convList}>
           <Skeleton isLoaded={!loading}>
@@ -129,18 +140,6 @@ function StatsPage() {
             ))}
           </Skeleton>
         </div>
-        <VStack className={styles.statsBottom}>
-          <p>Appointments: {numAppts}</p>
-          <p>Conversion %: {numAppts ? ((rows.length / numAppts) * 100) : 0}%</p>
-          <HStack>
-            <Button onClick={() => { setSearchDate(searchDate.subtract(1, 'day')) }}>
-              -
-            </Button>
-            <Button onClick={() => { setSearchDate(searchDate.add(1, 'day')) }}>
-              +
-            </Button>
-          </HStack>
-        </VStack>
       </VStack>
     </LocalizationProvider>
   )

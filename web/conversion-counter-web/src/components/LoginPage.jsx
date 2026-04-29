@@ -12,6 +12,7 @@ function LoginPage() {
   const [emailRegister, setEmailRegister] = useState(false)
 
   async function signInWithGoogle() {
+    console.log('Redirect URL:', `${import.meta.env.VITE_APP_URL}`);
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {

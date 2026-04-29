@@ -25,6 +25,8 @@ function InputPage() {
 
   const handleConversionSubmit = async () => {
     // Do Supabase database addition to conversions
+    if (!user) return;
+
     const { data, error } = await supabase.from("Conversions").insert([
       {
         user_id: user.id,
@@ -81,10 +83,10 @@ function InputPage() {
           <label htmlFor='apptField'>Appointments Taken</label>
           <HStack justifyContent="flex-start" width='100%'>
             <input className={styles.apptField} type='number' placeholder='0' min={0} id='apptField' value={numAppointments} onChange={(event) => setNumAppointments(event.target.value)} />
-            <Button id={styles.apptSave} onClick={handleApptsSubmit} >
+            <Button id={styles.apptSave} onClick={handleApptsSubmit} disabled={!user}>
               Save
             </Button>
-            <p>Current: {numAppointments}</p>
+            {/* <p>Current: {numAppointments}</p> */}
           </HStack>
         </Box>
         <Box className={styles.conversionBox} w='100%'>
