@@ -21,7 +21,7 @@ function GraphPage() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <VStack>
+      <VStack paddingTop="25%">
         <h1>
           Graph Page
         </h1>
