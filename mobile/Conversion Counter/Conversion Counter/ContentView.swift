@@ -12,22 +12,24 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
     @Query private var data: [DailyData]
+    @State private var auth = AuthModel()
+    @State private var hasSeenLanding = false
 
     var body: some View {
-        TabView {
-            InputView()
-                .tabItem {
-                    Label("Input", systemImage: "pencil")
+        Group {
+            if auth.isSignedIn {
+                MainTabView()
+            } else if hasSeenLanding {
+                NavigationStack {
+                    LoginPageView()
                 }
-            StatsView()
-                .tabItem {
-                    Label("Stats", systemImage: "list.number")
-                }
-            GraphView()
-                .tabItem {
-                    Label("Graph", systemImage: "chart.bar")
-                }
+            } else {
+                LandingView(onSignIn: {
+                    withAnimation { hasSeenLanding = true }
+                })
+            }
         }
+        .environment(auth)
     }
 }
 
