@@ -7,14 +7,20 @@
 
 import SwiftUI
 import SwiftData
+import GoogleSignIn
 
 @main
 struct Conversion_CounterApp: App {
+    @State private var auth = AuthModel()
 
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-                .modelContainer(for: [Item.self, DailyData.self])
+        var body: some Scene {
+            WindowGroup {
+                ContentView()
+                    .environment(auth)
+                    .onOpenURL { url in
+                        GIDSignIn.sharedInstance.handle(url)
+                    }
+                    .task { await auth.listen() }
+            }
         }
-    }
 }

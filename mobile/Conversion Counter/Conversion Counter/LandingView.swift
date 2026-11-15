@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct LandingView: View {
-    let onSignIn: () -> Void
     
     var body: some View {
         VStack {
@@ -22,11 +21,13 @@ struct LandingView: View {
                 .multilineTextAlignment(.center)
                 .padding(20)
             
-            Button("Sign In To Continue", action: onSignIn)
+            NavigationLink("Sign in to continue") {
+                LoginPageView()
+            }
         }
     }
 }
 
 #Preview {
-    LandingView(onSignIn: {})
+    LandingView()
 }

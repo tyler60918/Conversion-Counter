@@ -7,11 +7,19 @@
 
 import SwiftUI
 import Observation
+import Supabase
 
+@MainActor
 @Observable
 class AuthModel {
-    var isSignedIn = false
+    var isAuthenticated = false
+    var isLoading = true
 
-    func signIn() { isSignedIn = true }
-    func signOut() { isSignedIn = false }
+    func listen() async {
+        for await (event, session) in supabase.auth.authStateChanges {
+            isAuthenticated = session != nil && !(session?.isExpired ?? true)
+            isLoading = false
+        }
+        print("Auth listener stopped")
+    }
 }

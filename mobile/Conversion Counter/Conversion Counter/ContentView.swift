@@ -12,28 +12,27 @@ struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
     @Query private var data: [DailyData]
-    @State private var auth = AuthModel()
     @State private var hasSeenLanding = false
 
-    var body: some View {
-        Group {
-            if auth.isSignedIn {
-                MainTabView()
-            } else if hasSeenLanding {
-                NavigationStack {
-                    LoginPageView()
+    @Environment(AuthModel.self) private var auth
+
+        var body: some View {
+            NavigationStack {
+                Group {
+                    if auth.isLoading {
+                        ProgressView()
+                    } else if auth.isAuthenticated {
+                        MainTabView()
+                    } else {
+                        LandingView()
+                    }
                 }
-            } else {
-                LandingView(onSignIn: {
-                    withAnimation { hasSeenLanding = true }
-                })
             }
         }
-        .environment(auth)
-    }
 }
 
 #Preview {
     ContentView()
         .modelContainer(for: Item.self, inMemory: true)
+        .environment(AuthModel())
 }

@@ -38,7 +38,7 @@ struct LoginFormView: View {
             
             Button("Login") {
                 // TODO: Add create account action
-                auth.signIn()
+//                auth.signIn()
             }
             .padding()
             

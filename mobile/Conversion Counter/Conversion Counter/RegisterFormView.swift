@@ -48,7 +48,6 @@ struct RegisterFormView: View {
             
             Button("Create Account") {
                 // TODO: Add create account action
-                auth.signIn()
             }
             .padding()
             

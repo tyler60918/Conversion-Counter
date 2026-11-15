@@ -6,6 +6,17 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		527D0E1A30AA391400478794 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 527D0E1930AA391400478794 /* GoogleSignIn */; };
+		527D0E1C30AA391400478794 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 527D0E1B30AA391400478794 /* GoogleSignInSwift */; };
+		527D0E2030AA485700478794 /* Auth in Frameworks */ = {isa = PBXBuildFile; productRef = 527D0E1F30AA485700478794 /* Auth */; };
+		527D0E2230AA485700478794 /* Functions in Frameworks */ = {isa = PBXBuildFile; productRef = 527D0E2130AA485700478794 /* Functions */; };
+		527D0E2430AA485700478794 /* PostgREST in Frameworks */ = {isa = PBXBuildFile; productRef = 527D0E2330AA485700478794 /* PostgREST */; };
+		527D0E2630AA485700478794 /* Realtime in Frameworks */ = {isa = PBXBuildFile; productRef = 527D0E2530AA485700478794 /* Realtime */; };
+		527D0E2830AA485700478794 /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 527D0E2730AA485700478794 /* Storage */; };
+		527D0E2A30AA485700478794 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 527D0E2930AA485700478794 /* Supabase */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		52A3962F2EC6887200373408 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		527D0E1D30AA3CE700478794 /* Conversion-Counter-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Conversion-Counter-Info.plist"; sourceTree = "<group>"; };
 		52A3961F2EC6887100373408 /* Conversion Counter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Conversion Counter.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		52A3962E2EC6887200373408 /* Conversion CounterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Conversion CounterTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		52A396382EC6887200373408 /* Conversion CounterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Conversion CounterUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -42,6 +54,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				527D0E1A30AA391400478794 /* GoogleSignIn in Frameworks */,
+				527D0E1C30AA391400478794 /* GoogleSignInSwift in Frameworks */,
+				527D0E2830AA485700478794 /* Storage in Frameworks */,
+				527D0E2230AA485700478794 /* Functions in Frameworks */,
+				527D0E2A30AA485700478794 /* Supabase in Frameworks */,
+				527D0E2630AA485700478794 /* Realtime in Frameworks */,
+				527D0E2030AA485700478794 /* Auth in Frameworks */,
+				527D0E2430AA485700478794 /* PostgREST in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +85,7 @@
 		52A396162EC6887100373408 = {
 			isa = PBXGroup;
 			children = (
+				527D0E1D30AA3CE700478794 /* Conversion-Counter-Info.plist */,
 				52A396212EC6887100373408 /* Conversion Counter */,
 				52A396202EC6887100373408 /* Products */,
 			);
@@ -100,6 +121,14 @@
 			);
 			name = "Conversion Counter";
 			packageProductDependencies = (
+				527D0E1930AA391400478794 /* GoogleSignIn */,
+				527D0E1B30AA391400478794 /* GoogleSignInSwift */,
+				527D0E1F30AA485700478794 /* Auth */,
+				527D0E2130AA485700478794 /* Functions */,
+				527D0E2330AA485700478794 /* PostgREST */,
+				527D0E2530AA485700478794 /* Realtime */,
+				527D0E2730AA485700478794 /* Storage */,
+				527D0E2930AA485700478794 /* Supabase */,
 			);
 			productName = "Conversion Counter";
 			productReference = 52A3961F2EC6887100373408 /* Conversion Counter.app */;
@@ -178,6 +207,8 @@
 			mainGroup = 52A396162EC6887100373408;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				527D0E1830AA391400478794 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				527D0E1E30AA485700478794 /* XCRemoteSwiftPackageReference "supabase-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 52A396202EC6887100373408 /* Products */;
@@ -387,6 +418,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Conversion-Counter-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -408,13 +440,14 @@
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = 1;
 				XROS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Debug;
@@ -433,6 +466,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Conversion-Counter-Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -454,13 +488,14 @@
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = 1;
 				XROS_DEPLOYMENT_TARGET = 26.0;
 			};
 			name = Release;
@@ -611,6 +646,68 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		527D0E1830AA391400478794 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.1.0;
+			};
+		};
+		527D0E1E30AA485700478794 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		527D0E1930AA391400478794 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 527D0E1830AA391400478794 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		527D0E1B30AA391400478794 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 527D0E1830AA391400478794 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		527D0E1F30AA485700478794 /* Auth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 527D0E1E30AA485700478794 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Auth;
+		};
+		527D0E2130AA485700478794 /* Functions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 527D0E1E30AA485700478794 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Functions;
+		};
+		527D0E2330AA485700478794 /* PostgREST */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 527D0E1E30AA485700478794 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = PostgREST;
+		};
+		527D0E2530AA485700478794 /* Realtime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 527D0E1E30AA485700478794 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Realtime;
+		};
+		527D0E2730AA485700478794 /* Storage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 527D0E1E30AA485700478794 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Storage;
+		};
+		527D0E2930AA485700478794 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 527D0E1E30AA485700478794 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 52A396172EC6887100373408 /* Project object */;
 }

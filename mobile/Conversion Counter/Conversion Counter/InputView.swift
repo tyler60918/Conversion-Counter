@@ -7,6 +7,9 @@
 
 import SwiftUI
 import SwiftData
+import GoogleSignIn
+import Supabase
+import Auth
 
 struct InputView: View {
     @Environment(\.modelContext) private var context
@@ -27,12 +30,26 @@ struct InputView: View {
     var body: some View {
         ZStack {
             VStack(spacing: 20) {
-                Text("Input")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(20)
-                
+                HStack {
+                    Text("Input")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(20)
+                    
+                    Spacer()
+                    
+                    Button("Sign out") {
+                        Task {
+                            do {
+                                try await supabase.auth.signOut()
+                                GIDSignIn.sharedInstance.signOut()
+                            } catch {
+                                print("Sign out failed:", error)
+                            }
+                        }
+                    }
+                }
                 Spacer()
 
                 HStack {
