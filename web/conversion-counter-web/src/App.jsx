@@ -27,6 +27,7 @@ function App() {
       console.error("Logout error " + error.message)
     } else {
       console.log("Logged out")
+      navigate('/login')
     }
   }
 
@@ -63,7 +64,7 @@ function App() {
             Trends
           </Button>
           <p id='userName'>
-            {user ? "" : user.user_metadata.first_name}
+            {user ? user.user_metadata.first_name : ""}
           </p>
           <Button
             id="logoutButton"
