@@ -23,15 +23,16 @@ struct InputView: View {
     @State private var toastOpacity = 1.0
     @State private var showError = false
     @State private var numAppointments = ""
+    @State private var textFieldText = "Enter accessory that was purchased"
     
     @FocusState private var fieldIsFocused: Bool
     
     
     var body: some View {
         ZStack {
-            VStack(spacing: 20) {
+            VStack() {
                 HStack {
-                    Text("Input")
+                    Text("Log Conversion")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -49,73 +50,121 @@ struct InputView: View {
                             }
                         }
                     }
+                    Spacer()
                 }
+                
+                Text("Record a sale from your Genius Bar appointment")
+                
+                VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Date")
+                            .font(.headline)
+                        
+                        HStack {
+                            DatePicker(
+                                "",
+                                selection: $inputDate,
+                                displayedComponents: [.date]
+                            )
+                            .labelsHidden()
+                            Stepper(
+                                "",
+                                onIncrement: {inputDate = inputDate.addingTimeInterval(86_400)},
+                                onDecrement: {inputDate = inputDate.addingTimeInterval(-86_400)}
+                            )
+                            .labelsHidden()
+                        }
+                    }
+                    .padding()
+                    
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Appointments Taken")
+                            .font(.headline)
+                        
+                        HStack {
+                            TextField("0", text: $numAppointments)
+                                .padding()
+                                .multilineTextAlignment(.center)
+                                .keyboardType(.numberPad)
+                                .focused($fieldIsFocused)
+                                .frame(width: 60)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                        .stroke(Color.primary.opacity(0.12), lineWidth: 1)
+                                )
+                            
+                            Button("Save") {
+                                fieldIsFocused = false
+                                if numAppointments == "0" || numAppointments == "" {
+                                    showError = true
+                                    toastOpacity = 1.0
+                                } else {
+                                    if let existingData = data.first(where: { Calendar.current.isDate($0.date, inSameDayAs: inputDate) }) {
+                                        existingData.updateNumAppointments(Int(numAppointments)!)
+                                        try? context.save()
+                                    } else {
+                                        let newDailyData = DailyData(date: inputDate, numAppointments: Int(numAppointments)!)
+                                        context.insert(newDailyData)
+                                        try? context.save()
+                                    }
+                                    numAppointments = ""
+                                    itemAdded = true
+                                    toastOpacity = 1.0
+                                }
+                            }
+                            .buttonStyle(.primary)
+                        }
+                    }
+                    .padding()
+                }
+                .cardStyle()
+                
+                
+                
                 Spacer()
+                
+                
+                
+                VStack(spacing: 8) {
+                    VStack(spacing: 20) {
+                        HStack(spacing: 20) {
+                            Button("Accessory") {
+                                typeOfConversion = "Accessory"
+                                textFieldText = "Enter Accessory that was purchased"
+                            }
+                            .buttonStyle(.primary)
+                            
+                            Button("AppleCare") {
+                                typeOfConversion = "AppleCare"
+                                textFieldText = "Enter device that AppleCare was added to"
+                            }
+                            .buttonStyle(.primary)
+                        }
+                        HStack(spacing: 20) {
+                            Button("Trade-In") {
+                                typeOfConversion = "Trade-In"
+                                textFieldText = "Enter device that was traded-in"
+                            }
+                            .buttonStyle(.primary)
+                            
+                            Button("Upgrade") {
+                                typeOfConversion = "Upgrade"
+                                textFieldText = "Enter device that was purchased"
+                            }
+                            .buttonStyle(.primary)
+                        }
+                    }
+                    
+                    
+                    TextField(textFieldText, text: $itemPurchased)
+                        .padding()
+                        .multilineTextAlignment(.center)
+                        .autocorrectionDisabled(true)
+                        .focused($fieldIsFocused)
+                    
 
-                HStack {
-                    DatePicker(
-                        "",
-                        selection: $inputDate,
-                        displayedComponents: [.date]
-                    )
-                    .labelsHidden()
-                    Stepper(
-                        "",
-                        onIncrement: {inputDate = inputDate.addingTimeInterval(86_400)},
-                        onDecrement: {inputDate = inputDate.addingTimeInterval(-86_400)}
-                    )
-                    .labelsHidden()
-                }
-                
-                HStack {
-                    Text("Input type:")
-                    Picker("Input Type", selection: $typeOfInput) {
-                        Text("Conversion").tag("Conversion")
-                        Text("Appointment Count").tag("Appointment Count")
-                    }
-                }
-                .pickerStyle(.menu)
-                
-                if typeOfInput == "Conversion" {
-                    Picker("Conversion Type", selection: $typeOfConversion) {
-                        Text("Accessory").tag("Accessory")
-                        Text("AppleCare").tag("AppleCare")
-                        Text("Trade-In").tag("Trade-In")
-                        Text("Upgrade").tag("Upgrade")
-                    }
-                    .pickerStyle(.palette)
-                    .padding(EdgeInsets(top: 0, leading: 25, bottom: 0, trailing: 25))
                     
-                    switch typeOfConversion {
-                    case "Accessory":
-                        TextField("Enter accessory that was purchased", text: $itemPurchased)
-                            .padding()
-                            .multilineTextAlignment(.center)
-                            .autocorrectionDisabled(true)
-                            .focused($fieldIsFocused)
-                    case "AppleCare":
-                        TextField("Enter item AppleCare was attached to", text: $itemPurchased)
-                            .padding()
-                            .multilineTextAlignment(.center)
-                            .autocorrectionDisabled(true)
-                            .focused($fieldIsFocused)
-                    case "Upgrade":
-                        TextField("Enter device that was purchased", text: $itemPurchased)
-                            .padding()
-                            .multilineTextAlignment(.center)
-                            .autocorrectionDisabled(true)
-                            .focused($fieldIsFocused)
-                    case "Trade-In":
-                        TextField("Enter device that was traded-in", text: $itemPurchased)
-                            .padding()
-                            .multilineTextAlignment(.center)
-                            .autocorrectionDisabled(true)
-                            .focused($fieldIsFocused)
-                    default:
-                        Text("Please select a conversion category")
-                    }
-                    
-                    Button("Add item") {
+                    Button("Add Conversion") {
                         fieldIsFocused = false
                         if typeOfConversion == "Conversion Type" || itemPurchased.isEmpty {
                             showError = true
@@ -135,64 +184,42 @@ struct InputView: View {
                             toastOpacity = 1.0
                         }
                     }
-                } else {
-                    TextField("Enter number of Appointments", text: $numAppointments)
-                        .padding()
-                        .multilineTextAlignment(.center)
-                        .keyboardType(.numberPad)
-                        .focused($fieldIsFocused)
-                        
-                    Button("Submit Appointment Number") {
-                        fieldIsFocused = false
-                        if numAppointments == "0" || numAppointments == "" {
-                            showError = true
-                            toastOpacity = 1.0
-                        } else {
-                            if let existingData = data.first(where: { Calendar.current.isDate($0.date, inSameDayAs: inputDate) }) {
-                                existingData.updateNumAppointments(Int(numAppointments)!)
-                                try? context.save()
-                            } else {
-                                let newDailyData = DailyData(date: inputDate, numAppointments: Int(numAppointments)!)
-                                context.insert(newDailyData)
-                                try? context.save()
-                            }
-                            numAppointments = ""
-                            itemAdded = true
-                            toastOpacity = 1.0
-                        }
-                    }
+                    .buttonStyle(.secondary)
+                    
                 }
+                .cardStyle()
+                
                 Spacer()
-            }
-            
-            if showError {
-                ToastView(message: "Missing field/invalid selection", width: 400)
-                    .opacity(toastOpacity)
-                    .transition(.opacity)
-                    .task {
-                        try? await Task.sleep(nanoseconds: 1_500_000_000)
-                        withAnimation(.easeInOut(duration: 0.4)) {
-                            toastOpacity = 0
-                            showError = false
+                
+                if showError {
+                    ToastView(message: "Missing field/invalid selection", width: 400)
+                        .opacity(toastOpacity)
+                        .transition(.opacity)
+                        .task {
+                            try? await Task.sleep(nanoseconds: 1_500_000_000)
+                            withAnimation(.easeInOut(duration: 0.4)) {
+                                toastOpacity = 0
+                                showError = false
+                            }
                         }
-                    }
-            }
-            if itemAdded {
-                ToastView(message: "Item added", width: 200)
-                    .opacity(toastOpacity)
-                    .transition(.opacity)
-                    .task {
-                        try? await Task.sleep(nanoseconds: 1_500_000_000)
-                        withAnimation(.easeInOut(duration: 0.4)) {
-                            toastOpacity = 0
-                            itemAdded = false
+                }
+                if itemAdded {
+                    ToastView(message: "Item added", width: 200)
+                        .opacity(toastOpacity)
+                        .transition(.opacity)
+                        .task {
+                            try? await Task.sleep(nanoseconds: 1_500_000_000)
+                            withAnimation(.easeInOut(duration: 0.4)) {
+                                toastOpacity = 0
+                                itemAdded = false
+                            }
                         }
-                    }
+                }
             }
         }
     }
 }
 
 #Preview {
-//    InputView(data: DailyData(date: Date.now(), conversions: <#T##[Item]#>))
+    InputView()
 }
